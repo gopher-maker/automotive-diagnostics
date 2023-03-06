@@ -1,0 +1,10 @@
+dtcs:
+  tmm_dtc_0:
+    dtc_type: ,
+    signals: [],
+  pmm_dtc_0:
+    dtc_type: ,
+    signals: [],
+  bmm_dtc_0:
+    dtc_type: ,
+    signals: [],

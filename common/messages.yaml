@@ -1,0 +1,21 @@
+messages:
+  thermal_temp_1:
+    senders: [],
+    receivers: [],
+    frequency: ,
+  thermal_temp_2:
+    senders: [],
+    receivers: [],
+    frequency: ,
+  thermal_temp_3:
+    senders: [],
+    receivers: [],
+    frequency: ,
+  thermal_pump_speed:
+    senders: [],
+    receivers: [],
+    frequency: ,
+  thermal_pump_speed:
+    senders: [],
+    receivers: [],
+    frequency: ,
