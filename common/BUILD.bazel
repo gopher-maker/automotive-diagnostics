@@ -1,1 +1,12 @@
 package(default_visibility = ["//visibility:public"])
+
+load("@py_automotive_diagnostics//:requirements.bzl", "requirement")
+load("@rules_python//python:defs.bzl", "py_library")
+
+
+# Libraries.
+
+py_library(
+    name = "model_math",
+    srcs = ["model_math.py"],
+)

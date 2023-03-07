@@ -1,1 +1,36 @@
 package(default_visibility = ["//visibility:public"])
+
+load("@py_automotive_diagnostics//:requirements.bzl", "requirement")
+load("@rules_python//python:defs.bzl", "py_library")
+load("@subpar//:subpar.bzl", "par_binary")
+
+
+# Binaries.
+
+par_binary(
+    name = "vehicle",
+    srcs = ["vehicle.py"],
+    deps = [
+        ":inverter",
+        ":motor",
+    ],
+)
+
+# Libraries.
+
+py_library(
+    name = "inverter",
+    srcs = ["inverter.py"],
+    deps = [
+        "//common:model_math",
+    ],
+)
+
+py_library(
+    name = "motor",
+    srcs = ["motor.py"],
+    deps = [
+        ":inverter",
+        "//common:model_math",
+    ],
+)

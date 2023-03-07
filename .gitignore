@@ -1,0 +1,5 @@
+# Ignore Bazel output directories.
+**/bazel-*
+
+# Ignore certain Python files.
+**/*.pyc
