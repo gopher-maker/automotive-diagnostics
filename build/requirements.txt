@@ -1,0 +1,10 @@
+# External Python libraries.
+
+numpy
+pyqtgraph
+PySide6
+
+# Compatibility packages for PySide6.
+pyside6_addons
+pyside6_essentials
+shiboken6
