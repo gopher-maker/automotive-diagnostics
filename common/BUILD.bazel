@@ -9,6 +9,7 @@ py_binary(
     name = "vehicle_plotter",
     srcs = ["vehicle_plotter.py"],
     deps = [
+        "//vehicle_model:vehicle",
         requirement("numpy"),
         requirement("pyqtgraph"),
         requirement("PySide6"),
