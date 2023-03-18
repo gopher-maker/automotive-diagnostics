@@ -53,4 +53,4 @@ class Inverter:
     self.i_d, self.i_q = model_math.park_transform(
       self.i_a, self.i_b, self.i_c, self.theta_elec)
 
-    return self.i_q
+    return self.v_a, self.v_b, self.v_c, self.i_q

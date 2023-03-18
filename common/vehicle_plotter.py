@@ -88,36 +88,101 @@ class MainWindow(QtWidgets.QMainWindow):
 
     self._CleanDockArea()
 
-    dock1 = dockarea.Dock("Motor Parameters")
+    # Battery Parameters.
+    dock1 = dockarea.Dock("Battery Parameters")
     self._plot_dockarea.addDock(dock1, "top")
     glw = pyqtgraph.GraphicsLayoutWidget()
     dock1.addWidget(glw)
 
-    plot1 = glw.addPlot(title="Motor Parameters")
+    plot1 = glw.addPlot(title="Voltages")
     plot1.addLegend()
-    self._plots["torque_mech"] = plot1.plot(name="Mechanical Torque", pen="g")
-    plot1.setLabel("bottom", "Time", "s")
-    plot1.setLabel("left", "Torque", "N-m")
+    self._plots["v_bus"] = plot1.plot(name="Bus Voltage", pen="g")
+    plot1.setLabel("bottom", "Time", "[s]")
+    plot1.setLabel("left", "Voltage", "[V]")
     plot1.showGrid(True, True)
     self._plot_items.append(plot1)
 
     glw.nextRow()
 
-    plot2 = glw.addPlot(title="Inverter Parameters")
+    plot2 = glw.addPlot(title="Currents")
     plot2.addLegend()
-    self._plots["iq_cmd"] = plot2.plot(name="iq cmd", pen="r")
-    plot2.setLabel("bottom", "Time", "s")
-    plot2.setLabel("left", "Current", "A")
+    self._plots["i_bus"] = plot2.plot(name="Bus Current", pen="r")
+    plot2.setLabel("bottom", "Time", "[s]")
+    plot2.setLabel("left", "Current", "[A]")
     plot2.showGrid(True, True)
     plot2.setXLink(plot1)
     self._plot_items.append(plot2)
 
+    glw.nextRow()
+
+    plot3 = glw.addPlot(title="State of Charge (SOC)")
+    plot3.addLegend()
+    self._plots["batt_soc"] = plot3.plot(name="SOC", pen="r")
+    plot3.setLabel("bottom", "Time", "[s]")
+    plot3.setLabel("left", "SOC", "[%]")
+    plot3.showGrid(True, True)
+    plot3.setXLink(plot1)
+    self._plot_items.append(plot3)
+
+    # Inverter Parameters.
+    dock2 = dockarea.Dock("Inverter Parameters")
+    self._plot_dockarea.addDock(dock2, "below", dock1)
+    glw = pyqtgraph.GraphicsLayoutWidget()
+    dock2.addWidget(glw)
+
+    plot4 = glw.addPlot(title="Voltages")
+    plot4.addLegend()
+    # self._plots["vq_cmd"] = plot4.plot(name="Vq cmd", pen="g")
+    self._plots["v_a"] = plot4.plot(name="Va", pen="r")
+    self._plots["v_b"] = plot4.plot(name="Vb", pen="g")
+    self._plots["v_c"] = plot4.plot(name="Vc", pen="b")
+    plot4.setLabel("bottom", "Time", "[s]")
+    plot4.setLabel("left", "Voltage", "[V]")
+    plot4.showGrid(True, True)
+    self._plot_items.append(plot4)
+
+    glw.nextRow()
+
+    plot5 = glw.addPlot(title="Currents")
+    plot5.addLegend()
+    self._plots["iq_cmd"] = plot5.plot(name="Iq cmd", pen="r")
+    plot5.setLabel("bottom", "Time", "[s]")
+    plot5.setLabel("left", "Current", "[A]")
+    plot5.showGrid(True, True)
+    plot5.setXLink(plot1)
+    self._plot_items.append(plot5)
+
+    # Motor Parameters.
+    dock3 = dockarea.Dock("Motor Parameters")
+    self._plot_dockarea.addDock(dock3, "below", dock1)
+    glw = pyqtgraph.GraphicsLayoutWidget()
+    dock3.addWidget(glw)
+
+    plot6 = glw.addPlot(title="Torque")
+    plot6.addLegend()
+    self._plots["torque_mech"] = plot6.plot(name="Mechanical Torque", pen="g")
+    plot6.setLabel("bottom", "Time", "[s]")
+    plot6.setLabel("left", "Torque", "[N-m]")
+    plot6.showGrid(True, True)
+    self._plot_items.append(plot6)
+
+    glw.nextRow()
+
+    plot7 = glw.addPlot(title="Omega")
+    plot7.addLegend()
+    self._plots["omega_mech"] = plot7.plot(name="Omega", pen="r")
+    plot7.setLabel("bottom", "Time", "[s]")
+    plot7.setLabel("left", "Omega", "[rad/s]")
+    plot7.showGrid(True, True)
+    plot7.setXLink(plot1)
+    self._plot_items.append(plot7)
+
     # Raise Dock 1 to foreground.
-    # stack = dock1.container().stack
-    # current = stack.currentWidget()
-    # current.label.setDim(True)
-    # stack.setCurrentWidget(dock1)
-    # dock1.label.setDim(False)
+    stack = dock1.container().stack
+    current = stack.currentWidget()
+    current.label.setDim(True)
+    stack.setCurrentWidget(dock1)
+    dock1.label.setDim(False)
 
   def _SetupRealtimeData(self, downsample):
     """Sets up data structure for real-time data plotting."""
@@ -188,8 +253,15 @@ class MainWindow(QtWidgets.QMainWindow):
       except queue.Empty:
         break
 
-      self._realtime_data["torque_mech"][buffer_count] = msg["torque_mech"]
+      self._realtime_data["v_bus"][buffer_count] = msg["v_bus"]
+      self._realtime_data["i_bus"][buffer_count] = msg["i_bus"]
+      self._realtime_data["batt_soc"][buffer_count] = msg["batt_soc"]
+      self._realtime_data["v_a"][buffer_count] = msg["v_a"]
+      self._realtime_data["v_b"][buffer_count] = msg["v_b"]
+      self._realtime_data["v_c"][buffer_count] = msg["v_c"]
       self._realtime_data["iq_cmd"][buffer_count] = msg["iq_cmd"]
+      self._realtime_data["torque_mech"][buffer_count] = msg["torque_mech"]
+      self._realtime_data["omega_mech"][buffer_count] = msg["omega_mech"]
 
       if buffer_count < self._REALTIME_DATA_LEN - 1:
         buffer_count += 1

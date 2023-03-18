@@ -3,8 +3,6 @@
 from common import model_math
 from vehicle_model import inverter
 
-# TODO(jmbagara): Remove this import.
-import random
 
 class Motor:
 
@@ -61,8 +59,8 @@ class Motor:
 
     # self.torque_mech = (elec_power - self.motor_loss) / self.omega_mech
 
-    # TODO(jmbagara): Revert to the real calculation.
-    self.torque_mech = random.uniform(0, 1) * (elec_power - self.motor_loss) / self.omega_mech
+    # TODO(jmbagara): Make generic function for injecting noise.
+    self.torque_mech = (elec_power - self.motor_loss) / self.omega_mech
 
   def update_outputs(self):
     """Updates motor outputs for each time step."""

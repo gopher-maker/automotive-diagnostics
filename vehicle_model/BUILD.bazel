@@ -11,12 +11,21 @@ par_binary(
     name = "vehicle",
     srcs = ["vehicle.py"],
     deps = [
+        ":battery",
         ":inverter",
         ":motor",
     ],
 )
 
 # Libraries.
+
+py_library(
+    name = "battery",
+    srcs = ["battery.py"],
+    deps = [
+        requirement("numpy"),
+    ],
+)
 
 py_library(
     name = "inverter",
