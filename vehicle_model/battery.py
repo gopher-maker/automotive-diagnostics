@@ -1,16 +1,15 @@
 """Model of the HV battery."""
 
-import math
-
 import numpy as np
 
 
 class Battery:
 
-  def __init__(self, v_nominal, q_nominal):
+  def __init__(self, v_nominal, q_nominal, r_internal):
     # Battery parameters.
     self.v_nominal = v_nominal
     self.q_nominal = q_nominal
+    self.r_internal = r_internal
 
     # Discharge curve.
     self.batt_socs = [
@@ -30,6 +29,7 @@ class Battery:
     self.v_bus = 400.0
     self.i_bus = 0.0
     self.batt_soc = 100.0
+    self.batt_losses = 0.0  # Assume only resistive loss.
 
   def update_inputs(self, i_bus_cmd):
     """Updates Battery inputs for each time step."""
@@ -47,8 +47,13 @@ class Battery:
     # Calculate resultant bus voltage for the time step.
     self.v_bus = np.interp(self.batt_soc, self.batt_socs, self.batt_voltages)
 
+  def _update_losses(self):
+    """Updates battery electrical losses for each time step."""
+    self.batt_losses = self.i_bus**2 * self.r_internal 
+
   def update_outputs(self, dt):
     """Updates battery outputs for each time step."""
     self._calculate_soc(dt)
+    self._update_losses()
 
-    return self.v_bus, self.i_bus, self.batt_soc
+    return self.v_bus, self.i_bus, self.batt_soc, self.batt_losses

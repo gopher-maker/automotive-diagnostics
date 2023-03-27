@@ -6,10 +6,12 @@ from common import model_math
 
 class Inverter:
 
-  def __init__(self, r_ds_on, f_switching):
+  def __init__(self, r_ds_on, f_switching, t_rise, t_fall):
     # Inverter parameters.
-    self.r_ds_on = 0
+    self.r_ds_on = r_ds_on
     self.f_switching = f_switching
+    self.t_rise = t_rise
+    self.t_fall = t_fall
 
     # Inverter inputs.
     self.v_bus = 0.0
@@ -23,6 +25,7 @@ class Inverter:
     # Inverter outputs.
     self._vd, self.v_q = (0.0, 0.0)
     self._id, self.i_q = (0.0, 0.0)
+    self.inverter_losses = 0.0
 
   def update_inputs(self, v_bus, i_bus, theta_elec):
     """Updates Inverter inputs for each time step."""
@@ -44,6 +47,14 @@ class Inverter:
       self.i_bus * math.sin(self.theta_elec + (2 * math.pi / 3)),
     )
 
+  def _update_losses(self):
+    """Updates inverter electrical losses for each time step."""
+    conduction_loss = 1.5 * self.i_q**2 * self.r_ds_on
+    switching_loss = (
+       0.5 * self.v_bus * self.i_bus * (
+          self.t_rise + self.t_fall) * self.f_switching)
+    self.inverter_losses = conduction_loss + switching_loss
+
   def update_outputs(self):
     """Updates motor outputs for each time step."""
     self._calculate_3_phase()
@@ -53,4 +64,6 @@ class Inverter:
     self.i_d, self.i_q = model_math.park_transform(
       self.i_a, self.i_b, self.i_c, self.theta_elec)
 
-    return self.v_a, self.v_b, self.v_c, self.i_q
+    self._update_losses()
+
+    return self.v_d, self.v_q, self.i_d, self.i_q, self.inverter_losses
