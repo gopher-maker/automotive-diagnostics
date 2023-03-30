@@ -11,37 +11,9 @@ par_binary(
     name = "vehicle",
     srcs = ["vehicle.py"],
     deps = [
-        ":battery",
-        ":cooling_system",
-        ":inverter",
-        ":motor",
+        "//vehicle_model/plant:battery",
+        "//vehicle_model/plant:cooling_system",
+        "//vehicle_model/plant:inverter",
+        "//vehicle_model/plant:motor",
     ],
-)
-
-# Libraries.
-
-py_library(
-    name = "battery",
-    srcs = ["battery.py"],
-    deps = [
-        requirement("numpy"),
-    ],
-)
-
-py_library(
-    name = "cooling_system",
-    srcs = ["cooling_system.py"],
-)
-
-py_library(
-    name = "inverter",
-    srcs = ["inverter.py"],
-    deps = [
-        "//common:model_math",
-    ],
-)
-
-py_library(
-    name = "motor",
-    srcs = ["motor.py"],
 )

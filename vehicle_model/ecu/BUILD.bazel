@@ -1,1 +1,47 @@
 package(default_visibility = ["//visibility:public"])
+
+load("@py_automotive_diagnostics//:requirements.bzl", "requirement")
+load("@rules_python//python:defs.bzl", "py_binary", "py_library")
+
+
+# Libraries.
+
+## Parent ECU library.
+
+py_library(
+    name = "ecu",
+    srcs = ["ecu.py"],
+    deps = [
+        requirement("PyPubSub"),
+        "//digital_twin_model:fault_injection",
+    ],
+)
+
+## Children ECU libraries.
+
+py_library(
+    name = "bmm",
+    srcs = ["bmm.py"],
+    deps = [
+        ":ecu",
+        "//vehicle_model/diagnostics:dtc_util",
+    ],
+)
+
+py_library(
+    name = "pmm",
+    srcs = ["pmm.py"],
+    deps = [
+        ":ecu",
+        "//vehicle_model/diagnostics:dtc_util",
+    ],
+)
+
+py_library(
+    name = "tmm",
+    srcs = ["tmm.py"],
+    deps = [
+        ":ecu",
+        "//vehicle_model/diagnostics:dtc_util",
+    ],
+)

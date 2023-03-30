@@ -1,0 +1,59 @@
+symptoms:
+  s1:
+    conditions: ["A001", "A002"]
+    probable_cause_weights:
+      bmm_v_bus_sensor_open: 0.5
+      bmm_v_bus_sensor_short: 0.5
+  s2:
+    conditions: ["C001", "C002"]
+    probable_cause_weights:
+      bmm_v_bus_sensor_open: 1.0
+      bmm_v_bus_sensor_short: 0.0
+  s3:
+    conditions: ["D001", "D002"]
+    probable_cause_weights:
+      bmm_v_bus_sensor_open: 0.0
+      bmm_v_bus_sensor_short: 1.0
+
+causes:
+  bmm_v_bus_sensor_open:
+    repair_actions: "Check for DC bus voltage sensor failed open."
+  bmm_v_bus_sensor_short:
+    repair_actions: "Check for DC bus voltage sensor failed closed."
+
+# bmm_i_bus_sensor_failure:
+#   conditions: "A002 & A003"
+#   repair_actions: "Replace DC bus current sensor."
+# bmm_dc_bus_short_circuit:
+#   conditions: "D001 & D002"
+#   repair_actions: "De-energize HVDC bus and use multimeter to check for DC bus short circuit."
+# pmm_three_phase_ac_voltage_sensor_failure:
+#   conditions: "A004 & A005 | B004 & B005"
+#   repair_actions: "Replace one or more AC voltage sensors."
+# pmm_three_phase_ac_current_sensor_failure:
+#   conditions: "A006 & A007 | B006 & B007"
+#   repair_actions: "Replace one or more AC current sensors."
+# pmm_torque_sensor_failure:
+#   conditions: "A008 & B008"
+#   repair_actions: "Replace torque sensors."
+# pmm_omega_sensor_failure:
+#   conditions: "A009 & B009"
+#   repair_actions: "Replace angular rate (omega) sensors."
+# pmm_three_phase_ac_discontinuity:
+#   conditions: "C002 & C003"
+#   repair_actions: "De-energize HVDC (and AC) bus and use multimeter to check for AC bus open circuit."
+# pmm_three_phase_ac_short_circuit:
+#   conditions: "D002 & D003 & D005 & D006"
+#   repair_actions: "De-energize HVDC (and AC) bus and use multimeter to check for AC bus short circuit."
+# tmm_battery_junction_temp_sensor_failure:
+#   conditions: "A010 & B010"
+#   repair_actions: "Replace battery junction temperature sensor."
+# tmm_inverter_junction_temp_sensor_failure:
+#   conditions: "A011 & B011"
+#   repair_actions: "Replace inverter junction temperature sensor."
+# tmm_motor_junction_temp_sensor_failure:
+#   conditions: "A012 & B012"
+#   repair_actions: "Replace motor junction temperature sensor."
+# tmm_fluid_temp_sensor_failure:
+#   conditions: "A013 & B013"
+#   repair_actions: "Replace fluid temperature sensor."

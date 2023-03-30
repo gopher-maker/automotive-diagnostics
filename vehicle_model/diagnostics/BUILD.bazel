@@ -1,0 +1,37 @@
+package(default_visibility = ["//visibility:public"])
+
+load("@py_automotive_diagnostics//:requirements.bzl", "requirement")
+load("@rules_python//python:defs.bzl", "py_binary", "py_library")
+
+# Files.
+
+filegroup(
+    name = "dtcs_yaml",
+    srcs = [":dtcs.yaml"],
+)
+
+# Binaries.
+
+# # NOTE: Uncomment for debugging purposes only.
+# py_binary(
+#     name = "dtc_util",
+#     srcs = ["dtc_util.py"],
+#     data = [":dtcs_yaml"],
+#     deps = [
+#         requirement("PyYAML"),
+#         "@rules_python//python/runfiles",
+#     ],
+# )
+
+
+# Libraries.
+
+py_library(
+    name = "dtc_util",
+    srcs = ["dtc_util.py"],
+    data = [":dtcs_yaml"],
+    deps = [
+        requirement("PyYAML"),
+        "@rules_python//python/runfiles",
+    ],
+)

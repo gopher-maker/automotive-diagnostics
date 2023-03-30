@@ -2,14 +2,15 @@
 
 class Motor:
 
-  def __init__(self, Ld, Lq, Ke, Rs, n_pp, flux_linkage):
+  def __init__(
+    self, Ld, Lq, Ke, Rs, n_pp, flux_linkage, fault_injection_mode=False):
     # Motor parameters.
-    self.Ld = Ld  # [H].
-    self.Lq = Lq  # [H].
+    self._Ld = Ld  # [H].
+    self._Lq = Lq  # [H].
     self.Ke = Ke  # [Vphpk/(rad/s)].
-    self.Rs = Rs  # [Ohm].
-    self.n_pp = n_pp  # [].
-    self.flux_linkage = flux_linkage  # [Wb], a.k.a. "Lambda".
+    self._Rs = Rs  # [Ohm].
+    self._n_pp = n_pp  # [].
+    self._flux_linkage = flux_linkage  # [Wb], a.k.a. "Lambda".
 
     # Motor inputs.
     self.iq_cmd = 0.0
@@ -36,11 +37,11 @@ class Motor:
     self.v_bus = v_bus
     self.i_bus = i_bus
     self.omega_mech = omega_mech
-    self.omega_elec = self.omega_mech * self.n_pp
+    self.omega_elec = self.omega_mech * self._n_pp
 
   def _update_losses(self):
     """Updates motor electrical losses for each time step."""
-    self.motor_losses = 1.5 * self.i_q**2 * self.Rs
+    self.motor_losses = 1.5 * self.i_q**2 * self._Rs
 
   def _calculate_step(self):
     """Calculates motor output quantities for each time step."""

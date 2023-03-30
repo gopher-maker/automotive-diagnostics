@@ -1,0 +1,44 @@
+package(default_visibility = ["//visibility:public"])
+
+load("@py_automotive_diagnostics//:requirements.bzl", "requirement")
+load("@rules_python//python:defs.bzl", "py_library")
+
+
+# Libraries.
+
+py_library(
+    name = "battery",
+    srcs = ["battery.py"],
+    deps = [
+        requirement("numpy"),
+        "//common:model_math",
+        "//vehicle_model/ecu:bmm",
+    ],
+)
+
+py_library(
+    name = "cooling_system",
+    srcs = ["cooling_system.py"],
+    deps = [
+        "//common:model_math",
+        "//vehicle_model/ecu:tmm",
+    ],
+)
+
+py_library(
+    name = "inverter",
+    srcs = ["inverter.py"],
+    deps = [
+        "//common:model_math",
+        "//vehicle_model/ecu:pmm",
+    ],
+)
+
+py_library(
+    name = "motor",
+    srcs = ["motor.py"],
+    deps = [
+        "//common:model_math",
+        "//vehicle_model/ecu:pmm",
+    ],
+)

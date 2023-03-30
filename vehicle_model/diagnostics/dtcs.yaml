@@ -1,0 +1,186 @@
+bmm:
+  A001:
+    description: "Bus Voltage (DC) rationality fault."
+    type: rationality
+    signals: [v_bus]
+    lower_limit: 300  # [V].
+    upper_limit: 405  # [V].
+  A002:
+    description: "Bus Current (DC) rationality fault."
+    type: rationality
+    signals: [i_bus]
+    lower_limit: 0  # [A].
+    upper_limit: 225  # [A].
+  A003:
+    description: "Battery %SOC rationality fault."
+    type: rationality
+    signals: [batt_soc]
+    lower_limit: 10  # [%].
+    upper_limit: 100  # [%].
+  B001:
+    description: "Bus Voltage (DC) comms missing fault."
+    type: comms_missing
+    signals: [v_bus]
+    frequency: 100  # [Hz].
+  B002:
+    description: "Bus Current (DC) comms missing fault."
+    type: comms_missing
+    signals: [i_bus]
+    frequency: 100  # [Hz].
+  B003:
+    description: "Battery %SOC comms missing fault."
+    type: comms_missing
+    signals: [batt_soc]
+    frequency: 100  # [Hz].
+  C001:
+    description: "Bus Voltage (DC) open circuit fault."
+    type: open_circuit
+    signals: [v_bus]
+  C002:
+    description: "Bus Current (DC) open circuit fault."
+    type: open_circuit
+    signals: [i_bus]
+  D001:
+    description: "Bus Voltage (DC) short circuit fault."
+    type: short_circuit
+    signals: [v_bus]
+  D002:
+    description: "Bus Current (DC) short circuit fault."
+    type: short_circuit
+    signals: [i_bus]
+pmm:
+  A004:
+    description: "Direct Voltage (AC) rationality fault."
+    type: rationality
+    signals: [v_d]
+    lower_limit: 300  # [V].
+    upper_limit: 405  # [V].
+  A005:
+    description: "Quadrature Voltage (AC) rationality fault."
+    type: rationality
+    signals: [v_q]
+    lower_limit: 300  # [V].
+    upper_limit: 405  # [V].
+  A006:
+    description: "Direct Current (AC) rationality fault."
+    type: rationality
+    signals: [i_d]
+    lower_limit: 0  # [A].
+    upper_limit: 225  # [A].
+  A007:
+    description: "Quadrature Current (AC) rationality fault."
+    type: rationality
+    signals: [i_q]
+    lower_limit: 0  # [A].
+    upper_limit: 225  # [A].
+  A008:
+    description: "Mechanical Torque rationality fault."
+    type: rationality
+    signals: [torque_mech]
+    lower_limit: 0  # [N-m].
+    upper_limit: 900  # [N-m].
+  A009:
+    description: "Mechanical Angular Speed rationality fault."
+    type: rationality
+    signals: [omega_mech]
+    lower_limit: 0  # [rad/s].
+    upper_limit: 1550  # [rad/s].
+  B004:
+    description: "Direct Voltage (AC) comms missing fault."
+    type: comms_missing
+    signals: [v_d]
+    frequency: 100  # [Hz].
+  B005:
+    description: "Quadrature Voltage (AC) comms missing fault."
+    type: comms_missing
+    signals: [v_q]
+    frequency: 100  # [Hz].
+  B006:
+    description: "Direct Current (AC) comms missing fault."
+    type: comms_missing
+    signals: [i_d]
+    frequency: 100  # [Hz].
+  B007:
+    description: "Quadrature Current (AC) comms missing fault."
+    type: comms_missing
+    signals: [i_q]
+    frequency: 100  # [Hz].
+  B008:
+    description: "Mechanical Torque comms missing fault."
+    type: comms_missing
+    signals: [torque_mech]
+    frequency: 100  # [Hz].
+  B009:
+    description: "Mechanical Angular Speed comms missing fault."
+    type: comms_missing
+    signals: [omega_mech]
+    frequency: 100  # [Hz].
+  C003:
+    description: "Direct Voltage (AC) open circuit fault."
+    type: open_circuit
+    signals: [v_d]
+  C003:
+    description: "Quadrature Voltage (AC) open circuit fault."
+    type: open_circuit
+    signals: [v_q]
+  D003:
+    description: "Direct Voltage (AC) short circuit fault."
+    type: short_circuit
+    signals: [v_d]
+  D004:
+    description: "Quadrature Voltage (AC) short circuit fault."
+    type: short_circuit
+    signals: [v_q]
+  D005:
+    description: "Direct Current (AC) short circuit fault."
+    type: short_circuit
+    signals: [i_d]
+  D006:
+    description: "Quadrature Current (AC) short circuit fault."
+    type: short_circuit
+    signals: [i_q]
+tmm:
+  A010:
+    description: "Battery Junction Temperature rationality fault."
+    type: rationality
+    signals: [T_junc_batt]
+    lower_limit: 5  # [degC].
+    upper_limit: 40  # [degC].
+  A011:
+    description: "Inverter Junction Temperature rationality fault."
+    type: rationality
+    signals: [T_junc_inverter]
+    lower_limit: 5  # [degC].
+    upper_limit: 40  # [degC].
+  A012:
+    description: "Motor Junction Temperature rationality fault."
+    type: rationality
+    signals: [T_junc_motor]
+    lower_limit: 5  # [degC].
+    upper_limit: 40  # [degC].
+  A012:
+    description: "Cooling Fluid Temperature rationality fault."
+    type: rationality
+    signals: [T_fluid]
+    lower_limit: 5  # [degC].
+    upper_limit: 40  # [degC].
+  B010:
+    description: "Battery Junction Temperature comms missing fault."
+    type: comms_missing
+    signals: [T_junc_batt]
+    frequency: 100  # [Hz].
+  B011:
+    description: "Inverter Junction Temperature comms missing fault."
+    type: comms_missing
+    signals: [T_junc_inverter]
+    frequency: 100  # [Hz].
+  B012:
+    description: "Motor Junction Temperature comms missing fault."
+    type: comms_missing
+    signals: [T_junc_motor]
+    frequency: 100  # [Hz].
+  B013:
+    description: "Cooling Fluid Temperature comms missing fault."
+    type: comms_missing
+    signals: [T_fluid]
+    frequency: 100  # [Hz].

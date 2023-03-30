@@ -6,7 +6,7 @@ import random
 import time
 
 from common import model_math
-from vehicle_model import cooling_system, battery, inverter, motor
+from vehicle_model.plant import cooling_system, battery, inverter, motor
 
 
 # Constants.
@@ -50,14 +50,18 @@ fluid_heat_capacity = 3283  # [J/kg.K], specific heat capacity of cooling fluid.
 class Vehicle:
   """Representation of a vehicle powertrain."""
 
-  def __init__(self):
-    self._battery = battery.Battery(v_nominal, q_nominal, r_internal)
-    self._inverter = inverter.Inverter(r_ds_on, f_switching, t_rise, t_fall)
-    self._motor = motor.Motor(Ld, Lq, Ke, Rs, n_pp, flux_linkage)
+  def __init__(self, vehicle_id=1, fault_injection_mode=False):
+    self._vehicle_id = vehicle_id
+    self._battery = battery.Battery(
+        v_nominal, q_nominal, r_internal, fault_injection_mode)
+    self._inverter = inverter.Inverter(
+        r_ds_on, f_switching, t_rise, t_fall, fault_injection_mode)
+    self._motor = motor.Motor(
+        Ld, Lq, Ke, Rs, n_pp, flux_linkage, fault_injection_mode)
     self._cooling_sys = cooling_system.CoolingSystem(
         T_ambient, Rth_batt_junc, Rth_inverter_junc, Rth_motor_junc,
-        fluid_density, pipe_area, fluid_heat_capacity)
-    
+        fluid_density, pipe_area, fluid_heat_capacity, fault_injection_mode)
+
     # Time parameters.
     self._loop_start_timestamp = None
     self._loop_end_timestamp = None
@@ -96,6 +100,8 @@ class Vehicle:
     self._motor_losses = 0.0
 
     self._sim_out = {
+      # Vehicle ID.
+      "vehicle_id": self.get_vehicle_id(),
       # Time.
       "elapsed_time": self._elapsed_time,
       # Battery.
@@ -116,6 +122,10 @@ class Vehicle:
       "T_junc_motor": self._T_junc_motor,
       "T_fluid": self._T_fluid,
     }
+
+  def get_vehicle_id(self):
+    """Returns vehicle ID."""
+    return self._vehicle_id
 
   def run_time_step(self, start_time):
     """Runs a time step of the vehicle simulation."""
@@ -188,7 +198,7 @@ class Vehicle:
 
 def run_vehicle():
   """Runs a standalone vehicle simulation i.e. without plotting."""
-  vehicle_1 = Vehicle()
+  vehicle_1 = Vehicle(vehicle_id=1)
   start_time = time.time()
 
   while (time.time() - start_time) <= RUN_TIME:

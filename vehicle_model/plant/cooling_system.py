@@ -4,7 +4,7 @@ class CoolingSystem:
 
   def __init__(
     self, T_ambient, Rth_batt_junc, Rth_inverter_junc, Rth_motor_junc,
-    fluid_density, pipe_area, fluid_heat_capacity):
+    fluid_density, pipe_area, fluid_heat_capacity, fault_injection_mode=False):
     # Cooling system parameters.
     self.T_ambient = T_ambient
     self.Rth_batt_junc = Rth_batt_junc

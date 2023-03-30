@@ -41,6 +41,8 @@ class MainWindow(QtWidgets.QMainWindow):
     downsample_ledit = QtWidgets.QLineEdit(self)
     downsample_ledit.setValidator(QtGui.QIntValidator(1, 10000))
 
+    fault_injection_cbox = QtWidgets.QCheckBox("Fault Injection Mode", self)
+
     run_btn = QtWidgets.QPushButton("Run")
     run_btn.clicked.connect(self._HandlePlotRequest)
 
@@ -54,6 +56,7 @@ class MainWindow(QtWidgets.QMainWindow):
     hbox = QtWidgets.QHBoxLayout()
     hbox.addWidget(QtWidgets.QLabel("Downsample:", self))
     hbox.addWidget(downsample_ledit)
+    hbox.addWidget(fault_injection_cbox)
     hbox.addWidget(run_btn)
     hbox.addWidget(pause_btn)
 
@@ -70,6 +73,7 @@ class MainWindow(QtWidgets.QMainWindow):
     self.show()
 
     self._downsample_ledit = downsample_ledit
+    self._fault_injection_cbox = fault_injection_cbox
     self._status_message = status_message
     self._plot_dockarea = plot_dockarea
 
@@ -153,7 +157,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     # Motor Parameters.
     dock3 = dockarea.Dock("Motor")
-    self._plot_dockarea.addDock(dock3, "below", dock1)
+    self._plot_dockarea.addDock(dock3, "below", dock2)
     glw = pyqtgraph.GraphicsLayoutWidget()
     dock3.addWidget(glw)
 
@@ -178,7 +182,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     # Cooling System Parameters.
     dock4 = dockarea.Dock("Cooling System")
-    self._plot_dockarea.addDock(dock4, "below", dock1)
+    self._plot_dockarea.addDock(dock4, "below", dock3)
     glw = pyqtgraph.GraphicsLayoutWidget()
     dock4.addWidget(glw)
 
@@ -233,7 +237,9 @@ class MainWindow(QtWidgets.QMainWindow):
     for plot in self._plot_items:
       plot.setXRange(-0.01 * self._REALTIME_DATA_LEN * downsample, 0)
 
-    vehicle_runner = VehicleRunner(buffer_size, self._runner_data_queue)
+    vehicle_runner = VehicleRunner(
+        buffer_size, self._runner_data_queue,
+        fault_injection_mode=self._fault_injection_cbox.isChecked())
     self._threads.append(vehicle_runner)
     vehicle_runner.has_data.connect(self._GetVehicleData)
     vehicle_runner.has_error.connect(self._PrintError)
@@ -380,7 +386,8 @@ class VehicleListener(QtCore.QThread):
         else:
           downsample_counter = 0
           msg = self._vehicle_sim.get_sim_outputs()
-          print(msg)
+          # Print sim outputs to console.
+          # print(msg)
           self._data_queue.put(msg)
 
         if buffer_counter < self._buffer_size - 1:
@@ -409,12 +416,14 @@ class VehicleRunner(QtCore.QThread):
   has_error = QtCore.Signal(str)
   has_data = QtCore.Signal()
 
-  def __init__(self, buffer_size, data_queue, parent=None):
+  def __init__(
+    self, buffer_size, data_queue, fault_injection_mode=False, parent=None):
     """Initializes a VehicleRunner."""
     QtCore.QThread.__init__(self, parent)
 
     self.should_exit = False
-    self._vehicle_sim = vehicle.Vehicle()
+    self._vehicle_sim = vehicle.Vehicle(
+        vehicle_id=1, fault_injection_mode=fault_injection_mode)
     self._buffer_size = buffer_size
     self._data_queue = data_queue
     self._start_time = time.time()

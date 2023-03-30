@@ -1,10 +1,19 @@
 package(default_visibility = ["//visibility:public"])
 
-load("@py_automotive_diagnostics//:requirements.bzl", "requirement", "whl_requirement")
+load("@py_automotive_diagnostics//:requirements.bzl", "requirement")
 load("@rules_python//python:defs.bzl", "py_binary", "py_library")
 
 
 # Binaries.
+
+py_binary(
+    name = "dojo",
+    srcs = ["dojo.py"],
+    deps = [
+        "//vehicle_model:vehicle",
+    ],
+)
+
 py_binary(
     name = "vehicle_plotter",
     srcs = ["vehicle_plotter.py"],

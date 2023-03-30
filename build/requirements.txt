@@ -3,6 +3,8 @@
 numpy
 pyqtgraph
 PySide6
+PyPubSub == 4.0.3
+PyYAML
 
 # Compatibility packages for PySide6.
 pyside6_addons

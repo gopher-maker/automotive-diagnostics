@@ -1,1 +1,48 @@
 package(default_visibility = ["//visibility:public"])
+
+load("@py_automotive_diagnostics//:requirements.bzl", "requirement")
+load("@rules_python//python:defs.bzl", "py_binary", "py_library")
+
+
+# Files.
+
+filegroup(
+    name = "fault_tree_yaml",
+    srcs = [":fault_tree.yaml"],
+)
+
+# Binaries.
+
+# # NOTE: Uncomment for debugging purposes only.
+# py_binary(
+#     name = "fault_tree_util",
+#     srcs = ["fault_tree_util.py"],
+#     data = [":fault_tree_yaml"],
+#     deps = [
+#         requirement("PyYAML"),
+#         "@rules_python//python/runfiles",
+#         "//vehicle_model/diagnostics:dtc_util",
+#     ],
+# )
+
+# Libraries.
+
+py_library(
+    name = "fault_injection",
+    srcs = ["fault_injection.py"],
+    deps = [
+        ":fault_tree_util",
+        "//vehicle_model/diagnostics:dtc_util",
+    ],
+)
+
+py_library(
+    name = "fault_tree_util",
+    srcs = ["fault_tree_util.py"],
+    data = [":fault_tree_yaml"],
+    deps = [
+        requirement("PyYAML"),
+        "@rules_python//python/runfiles",
+        "//vehicle_model/diagnostics:dtc_util",
+    ],
+)
